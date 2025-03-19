@@ -13,6 +13,7 @@ import SwiftUI
 let rootEntity = Entity()
 var operatingRoomModel = ModelEntity()
 var syringeModel = ModelEntity()
+var doctorsStoolModel = ModelEntity()
 
 struct ImmersiveView: View {
     @Environment(AppModel.self) var appModel
@@ -27,13 +28,21 @@ struct ImmersiveView: View {
                 operatingRoomModel = loadingOperatingRoomModel
                 rootEntity.addChild(operatingRoomModel)
                 
-                // Loa the sytinge model
+                // Load the sytinge model
                 let loadedSyringeModel = try await ModelEntity(named: "Syringe")
                 syringeModel = loadedSyringeModel
                 syringeModel.position = .init(x: 0.4, y: 0.3, z: 0) // set a custom position, move it over a bit
                 syringeModel.components.set(InputTargetComponent()) // needed for drag gesture
                 syringeModel.generateCollisionShapes(recursive: true) // needed for drag gesture
                 rootEntity.addChild(syringeModel)
+                
+                // Load the doctors stool model
+                let loadedDotorsStoolModel = try await ModelEntity(named: "Doctors_Chair")
+                doctorsStoolModel = loadedDotorsStoolModel
+                doctorsStoolModel.position = .init(x: 0.4, y: 0.3, z: 0.3) 
+                doctorsStoolModel.components.set(InputTargetComponent())
+                doctorsStoolModel.generateCollisionShapes(recursive: true)
+                rootEntity.addChild(doctorsStoolModel)
             }
         }
         .gesture(dragGesture)
