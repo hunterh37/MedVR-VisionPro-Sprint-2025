@@ -10,3 +10,23 @@ This sample repository contains a working example of using hand tracking to pare
 ### [MedicalToolsSample](https://github.com/hunterh37/MedVR-VisionPro-Sprint-2025/tree/ba0400c1c96ba546dc23d9096c1346daa10de3e5/2025/MedicalToolsSample/MedicalToolsSample)
 This sample repository contains a working example of loading an operating room 3d model and placing it in the environment.  Along with multiple grabbale medical/surgical devices, with physics and collision support.
 - *Helps with:* Grabable objects, Loading a virtual scene, CollisionComponent & PhysicsBodyComponent
+
+
+
+
+------- 
+
+
+
+
+Other general Vision Pro Sample projects:
+
+- https://github.com/hunterh37/VisionOS_BouncyBalls
+- https://github.com/hunterh37/VisionOS_SceneReconstructionDemo
+- https://github.com/hunterh37/VisionOS_AnimatedModelEntityDemo
+
+
+Shareplay sample projects:
+
+- https://github.com/hunterh37/Joj-SharePlay-VisionOS
+- https://github.com/hunterh37/BadApplesRealityHack
