@@ -11,39 +11,22 @@ import SwiftUI
 
 /* Global entities */
 let rootEntity = Entity()
+var floorEntity = Entity()
 var operatingRoomModel = ModelEntity()
 var syringeModel = ModelEntity()
 var doctorsStoolModel = ModelEntity()
+var heartRateModel = ModelEntity()
+var medicalScissorsModel = ModelEntity()
+var surgicalMaskModel = ModelEntity()
 
 struct ImmersiveView: View {
     @Environment(AppModel.self) var appModel
 
     var body: some View {
         RealityView { content in
-            content.add(rootEntity) // Add rootEntity to the scene
-            
-            Task {
-                // Load the ChariteUniversity_OperatingRoomScan model
-                let loadingOperatingRoomModel = try await ModelEntity(named: "ChariteUniversity_OperatingRoomScan")
-                operatingRoomModel = loadingOperatingRoomModel
-                rootEntity.addChild(operatingRoomModel)
-                
-                // Load the sytinge model
-                let loadedSyringeModel = try await ModelEntity(named: "Syringe")
-                syringeModel = loadedSyringeModel
-                syringeModel.position = .init(x: 0.4, y: 0.3, z: 0) // set a custom position, move it over a bit
-                syringeModel.components.set(InputTargetComponent()) // needed for drag gesture
-                syringeModel.generateCollisionShapes(recursive: true) // needed for drag gesture
-                rootEntity.addChild(syringeModel)
-                
-                // Load the doctors stool model
-                let loadedDotorsStoolModel = try await ModelEntity(named: "Doctors_Chair")
-                doctorsStoolModel = loadedDotorsStoolModel
-                doctorsStoolModel.position = .init(x: 0.4, y: 0.3, z: 0.3) 
-                doctorsStoolModel.components.set(InputTargetComponent())
-                doctorsStoolModel.generateCollisionShapes(recursive: true)
-                rootEntity.addChild(doctorsStoolModel)
-            }
+            content.add(rootEntity)
+            appModel.spawnFloor()
+            await appModel.spawnStartingScene()
         }
         .gesture(dragGesture)
     }
@@ -51,10 +34,29 @@ struct ImmersiveView: View {
     var dragGesture: some Gesture {
         DragGesture()
             .targetedToAnyEntity()
-            .onChanged { value in
+            .onChanged { value in // When drag begins/changes, set Rigidbody to kinematic
                 guard let parent = value.entity.parent else { return }
                 value.entity.position = value.convert(value.location3D, from: .local, to: parent)
+                value.entity.components[PhysicsBodyComponent.self]?.mode = .kinematic
+                
+                print("value position:\(value.entity.position)")
             }
+            .onEnded({ value in // When drag ends, set Rigidbody back to dynamic
+                value.entity.components[PhysicsBodyComponent.self]?.mode = .dynamic
+                
+                
+            })
+    }
+}
+
+extension Entity {
+    func configureGestures() {
+        self.components.set(InputTargetComponent())
+        self.generateCollisionShapes(recursive: true)
+    }
+    
+    func configurePhysics() {
+        self.components.set(PhysicsBodyComponent(mode: .dynamic))
     }
 }
 
