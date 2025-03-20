@@ -37,22 +37,22 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
     
     func start() async {
         do {
-            // leftHandEntity = try await ModelEntity(named: "leftHand")
+            // Load the Syringe 3d model to rightHandEntity
             rightHandEntity = try await ModelEntity(named: "Syringe")
-            leftHandEntity.scale = .init(repeating: 0.13)
-            rightHandEntity.scale = .init(repeating: 0.06)
         } catch { }
         
+        // Add rightHandEntity as a child to rightHandEntity
         rightHandIntermediate.addChild(rightHandEntity)
+        
+        // Add the rightHandIntermediate to the scene
         rootEntity.addChild(rightHandIntermediate)
         
+        // Start the hand tracking session and await anchor updates
         do {
             if HandTrackingProvider.isSupported {
                 try await session.run([handTracking])
                 await publishHandTrackingUpdates()
-            } else {
-                
-            }
+            } else { }
         } catch { }
     }
 
@@ -70,9 +70,15 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
                     leftHandEntity.scale = .init(repeating: 0.13) 
                 } else if anchor.chirality == .right {
                     latestHandTracking.right = anchor
+                    
+                    // Update the rightHandIntermediate position to the last received right hand anchor update
                     rightHandIntermediate.transform = Transform(matrix: anchor.originFromAnchorTransform)
                     
-                    checkIfPerformingGunShootGesture(update: update)
+                    // Apply a custom offset to the syringe so its held in hand
+                    configureSyringeEntityHandOffset()
+                    
+                    // Check for custom gestures
+                    checkIfPerformingGesture(update: update)
                 }
                 
             default:  break
@@ -80,41 +86,31 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
         }
     }
     
-    func monitorSessionEvents() async {
-        for await event in session.events {
-            switch event {
-            case .authorizationChanged(let type, let status):
-                if type == .handTracking && status != .allowed {
-                    
-                }
-            case .dataProviderStateChanged(dataProviders: let dataProviders, newState: let newState, error: _):
-                print("Data provide state changed: \(dataProviders.count) - \(newState.description)")
-            @unknown default:
-                print("Session event \(event)")
-            }
-        }
+    /// Applies a custom rotation + position offset so the syringe entity appears
+    /// as if it's being held in your right hand.
+    func configureSyringeEntityHandOffset() {
+        rightHandEntity.transform.applyRotation(degrees: 180, around: SIMD3<Float>(0, 1, 0))
+        let adjustment = SIMD3<Float>(0.065, 0.0056, 0.005)
+        rightHandEntity.position += adjustment
     }
 }
 
 extension HandGestureModel {
     private func configureHandCollision() {
         var collision = CollisionComponent(shapes: [ShapeResource.generateSphere(radius: 0.214)])
-        collision.filter = CollisionFilter(group: handCollisionGroup, mask: [projectileCollisionGroup])
         collision.mode = .default
         
-        leftHandEntity.name = handCollisionName
         leftHandEntity.collision = collision
         leftHandEntity.components[PhysicsBodyComponent.self] = .init(
             massProperties: .default, material: nil,  mode: .kinematic)
         
-        rightHandEntity.name = handCollisionName
         rightHandEntity.collision = collision
         rightHandEntity.components[PhysicsBodyComponent.self] = .init(
             massProperties: .default, material: nil,  mode: .kinematic)
     }
     
     /// Compute if is making finger gun trigger action, based on received HandAnchor update
-    func checkIfPerformingGunShootGesture(update: AnchorUpdate<HandAnchor>) {
+    func checkIfPerformingGesture(update: AnchorUpdate<HandAnchor>) {
         Task(priority: .low) {
             guard let indexFinger = update.anchor.handSkeleton?.joint(.indexFingerTip),
                   let thumbTip = update.anchor.handSkeleton?.joint(.indexFingerMetacarpal) else {
@@ -123,22 +119,24 @@ extension HandGestureModel {
             let indexFingerPos = matrix_multiply(update.anchor.originFromAnchorTransform, indexFinger.anchorFromJointTransform).translation
             let thumbTipPos = matrix_multiply(update.anchor.originFromAnchorTransform, thumbTip.anchorFromJointTransform).translation
             
-            let currentFingertipShootDistance = simd_distance(indexFingerPos, thumbTipPos)//thumbTipPos - indexFingerPos
+            let currentDistanceIndexTipAndThumbTip = simd_distance(indexFingerPos, thumbTipPos)
             
-            print("shoot gesture distance: \(currentFingertipShootDistance)")
+            print("Gesture distance: \(currentDistanceIndexTipAndThumbTip)")
             
-            // Trigger the gun shoot action if user thumbtip - indexfinger is close enough
-            // to mimic finger gun action 'pulling trigger'
-            if currentFingertipShootDistance < Float(minimumGestureDistance) {
+            // Check if the index finger and thumb tip are < minimumGestureDistance
+            
+            if currentDistanceIndexTipAndThumbTip < Float(minimumGestureDistance) {
                 let now = Date()
                 guard now > nextActionTime else { return }
                 
                 nextActionTime = now + actionDelayTime
+                
+                // Trigger your action here
             }
         }
     }
     
-    func getPositionInFrontOfGun(distance: Float) -> SIMD3<Float> {
+    func getPositionInFrontOfHand(distance: Float) -> SIMD3<Float> {
         let handTransform = rightHandIntermediate.transform
         var forwardDirection = simd_normalize(handTransform.matrix.columns.0.xyz)
         forwardDirection = forwardDirection * -1
@@ -175,3 +173,10 @@ extension float4x4 {
     }
 }
 
+extension Transform {
+    mutating func applyRotation(degrees: Float, around axis: SIMD3<Float>) {
+        let radians = degrees * (.pi / 180)  // Convert degrees to radians
+        let rotation = simd_quatf(angle: radians, axis: axis)  // Create quaternion rotation
+        self.rotation = rotation * self.rotation  // Apply rotation to current transform
+    }
+}
