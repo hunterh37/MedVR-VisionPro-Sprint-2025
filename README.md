@@ -6,14 +6,19 @@ This repository contains multiple sample projects to help you get started in the
 ### [CustomHandGestureSample](https://github.com/hunterh37/MedVR-VisionPro-Sprint-2025/tree/ba0400c1c96ba546dc23d9096c1346daa10de3e5/2025/CustomHandGestureSample/CustomHandGestureSample)
 This sample repository contains a working example of using hand tracking to parent a syringe 3d model to the users right hand.
 - *Helps with:* Hand Tracking, Showing a virtual object on the hand
+<img width="600" alt="Screenshot 2025-03-25 at 4 04 59 PM" src="https://github.com/user-attachments/assets/c61e4cbf-b05d-4954-b54d-39296812edf2" />
+
 
 ### [MedicalToolsSample](https://github.com/hunterh37/MedVR-VisionPro-Sprint-2025/tree/ba0400c1c96ba546dc23d9096c1346daa10de3e5/2025/MedicalToolsSample/MedicalToolsSample)
 This sample repository contains a working example of loading an operating room 3d model and placing it in the environment.  Along with multiple grabbale medical/surgical devices, with physics and collision support.
 - *Helps with:* Grabable objects, Loading a virtual scene, CollisionComponent & PhysicsBodyComponent
+<img width="600" alt="Screenshot 2025-03-25 at 4 04 23 PM" src="https://github.com/user-attachments/assets/b2965291-a682-4f32-ad5b-93ba2288ecbc" />
+
 
 ### [RealityViewAttachmentSample](https://github.com/hunterh37/MedVR-VisionPro-Sprint-2025/tree/fc59f3cf994674ef9195b2c8a15bebd206296924/2025/RealityViewAttachmentSample/RealityViewAttachmentSample)
 This sample repository contains a working example of using RealityView Attachments to display SwiftUI 2d view content in your immersive scene.
 - *Helps with:* Display text, buttons, or other SwiftUI views in 3d space
+<img width="600" alt="Screenshot 2025-03-25 at 4 03 20 PM" src="https://github.com/user-attachments/assets/a75fb881-155d-4a95-a43c-85b940a82cf8" />
 
 
 ------- 
