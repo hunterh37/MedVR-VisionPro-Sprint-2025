@@ -34,7 +34,7 @@ struct ImmersiveView: View {
             // Register the new attachment view for 'displayTextAttachmentName'
             if let displayTextAttachmentView = attachments.entity(for: displayTextAttachmentName) {
                 displayTextAttachmentView.components.set(BillboardComponent())
-                rightHandEntity.addChild(displayTextAttachmentView)
+                rightHandIntermediate.addChild(displayTextAttachmentView)
             }
         } update: { content, attachments in
             // Optional step: update the displayTextAttachmentName visibility

@@ -76,7 +76,6 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
                     
                     // Update the rightHandIntermediate position to the last received right hand anchor update
                     rightHandIntermediate.transform = Transform(matrix: anchor.originFromAnchorTransform)
-                    leftHandEntity.scale = .init(repeating: 1)
                     // Apply a custom offset to the entity so its held in hand
                     configureSyringeEntityHandOffset()
                     
