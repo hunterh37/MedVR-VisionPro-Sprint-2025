@@ -40,6 +40,9 @@ struct ImmersiveView: View {
             // Optional step: update the displayTextAttachmentName visibility
             if let displayTextAttachmentView = attachments.entity(for: displayTextAttachmentName) {
                 displayTextAttachmentView.isEnabled = showDisplayTextAttachmentView
+                
+                // Set an offset so the view appears beside hand
+                displayTextAttachmentView.position = .init(x: 0, y: 0.03, z: 0.1)
             }
         } attachments: {
             // RealityView Attachment: Step 1

@@ -12,8 +12,8 @@ import RealityKitContent
 /* Global entities */
 var rootEntity = Entity()
 var floorEntity = ModelEntity()
-var leftHandEntity = ModelEntity(mesh: .generateSphere(radius: 0.04), materials: [UnlitMaterial(color: .green)], collisionShape: .generateSphere(radius: 0.04), mass: 100)
-var rightHandEntity = ModelEntity(mesh: .generateSphere(radius: 0.04), materials: [UnlitMaterial(color: .green)], collisionShape: .generateSphere(radius: 0.04), mass: 100)
+var leftHandEntity = ModelEntity(mesh: .generateSphere(radius: 0.04), materials: [UnlitMaterial(color: .green)], collisionShape: .generateSphere(radius: 0.04), mass: 0)
+var rightHandEntity = ModelEntity(mesh: .generateSphere(radius: 0.04), materials: [UnlitMaterial(color: .green)], collisionShape: .generateSphere(radius: 0.04), mass: 0)
 var rightHandIntermediate = Entity()
 
 struct ImmersiveView: View {
@@ -26,6 +26,7 @@ struct ImmersiveView: View {
         }.task {
             await gestureModel.start()
         }
+        .upperLimbVisibility(.hidden)
     }
 }
 

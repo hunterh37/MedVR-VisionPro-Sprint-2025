@@ -39,13 +39,14 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
         do {
             // Load the Syringe 3d model to rightHandEntity
             rightHandEntity = try await ModelEntity(named: "Syringe")
+            // Add rightHandEntity as a child to rightHandEntity
+            rightHandIntermediate.addChild(rightHandEntity)
+            
+            // Add the rightHandIntermediate to the scene
+            rootEntity.addChild(rightHandIntermediate)
+            
+            rootEntity.addChild(leftHandEntity)
         } catch { }
-        
-        // Add rightHandEntity as a child to rightHandEntity
-        rightHandIntermediate.addChild(rightHandEntity)
-        
-        // Add the rightHandIntermediate to the scene
-        rootEntity.addChild(rightHandIntermediate)
         
         // Start the hand tracking session and await anchor updates
         do {
@@ -73,6 +74,7 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
                     
                     // Update the rightHandIntermediate position to the last received right hand anchor update
                     rightHandIntermediate.transform = Transform(matrix: anchor.originFromAnchorTransform)
+                    rightHandIntermediate.scale = .init(repeating: 1)
                     
                     // Apply a custom offset to the syringe so its held in hand
                     configureSyringeEntityHandOffset()
@@ -89,9 +91,10 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
     /// Applies a custom rotation + position offset so the syringe entity appears
     /// as if it's being held in your right hand.
     func configureSyringeEntityHandOffset() {
-        rightHandEntity.transform.applyRotation(degrees: 180, around: SIMD3<Float>(0, 1, 0))
-        let adjustment = SIMD3<Float>(0.065, 0.0056, 0.005)
-        rightHandEntity.position += adjustment
+       // rightHandIntermediate.transform.applyRotation(degrees: -40, around: SIMD3<Float>(1, 0, 0))
+       // rightHandIntermediate.transform.applyRotation(degrees: 180, around: SIMD3<Float>(0, 1, 0))
+        let adjustment = SIMD3<Float>(-0.12, -0.0596, 0.02)
+        rightHandEntity.position = adjustment
     }
 }
 
