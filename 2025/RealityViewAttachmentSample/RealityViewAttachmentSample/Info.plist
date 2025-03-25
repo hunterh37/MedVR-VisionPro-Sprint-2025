@@ -11,5 +11,7 @@
 		<key>UISceneConfigurations</key>
 		<dict/>
 	</dict>
+	<key>NSHandsTrackingUsageDescription</key>
+	<string>We need access to your hand tracking information</string>
 </dict>
 </plist>

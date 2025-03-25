@@ -11,8 +11,8 @@ import RealityKit
 /* Global entities */
 var rootEntity = Entity()
 var floorEntity = ModelEntity()
-var leftHandEntity = ModelEntity(mesh: .generateSphere(radius: 0.04), materials: [UnlitMaterial(color: .green)], collisionShape: .generateSphere(radius: 0.04), mass: 100)
-var rightHandEntity = ModelEntity(mesh: .generateSphere(radius: 0.04), materials: [UnlitMaterial(color: .green)], collisionShape: .generateSphere(radius: 0.04), mass: 100)
+var leftHandEntity = ModelEntity(mesh: .generateSphere(radius: 0.04), materials: [UnlitMaterial(color: .green)], collisionShape: .generateSphere(radius: 0.04), mass: 0)
+var rightHandEntity = ModelEntity(mesh: .generateSphere(radius: 0.04), materials: [UnlitMaterial(color: .green)], collisionShape: .generateSphere(radius: 0.04), mass: 0)
 var rightHandIntermediate = Entity()
 
 struct ImmersiveView: View {
@@ -30,7 +30,7 @@ struct ImmersiveView: View {
             rootEntity = ModelEntity()
             content.add(rootEntity)
             
-            // RealityView Attachment: Step 1
+            // RealityView Attachment: Step 2
             // Register the new attachment view for 'displayTextAttachmentName'
             if let displayTextAttachmentView = attachments.entity(for: displayTextAttachmentName) {
                 displayTextAttachmentView.components.set(BillboardComponent())
@@ -42,7 +42,7 @@ struct ImmersiveView: View {
                 displayTextAttachmentView.isEnabled = showDisplayTextAttachmentView
             }
         } attachments: {
-            // RealityView Attachment: Step 2
+            // RealityView Attachment: Step 1
             // Define the SwiftUI View that will be displayed for 'displayTextAttachmentName'
             Attachment(id: displayTextAttachmentName) {
                 return Text(displayText)

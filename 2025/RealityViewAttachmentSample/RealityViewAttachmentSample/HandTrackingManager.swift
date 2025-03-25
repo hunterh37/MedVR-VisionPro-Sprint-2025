@@ -39,15 +39,17 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
     func start() async {
         do {
             // Load a custom 3d model to rightHandEntity
-            rightHandEntity = try await ModelEntity(named: "xxx")
+            rightHandEntity = try await ModelEntity(named: "Syringe")
         } catch { }
         
         // Add rightHandEntity as a child to rightHandEntity
         rightHandIntermediate.addChild(rightHandEntity)
-        
+                
         // Add the rightHandIntermediate to the scene
         rootEntity.addChild(rightHandIntermediate)
         
+        rootEntity.addChild(leftHandEntity)
+
         // Start the hand tracking session and await anchor updates
         do {
             if HandTrackingProvider.isSupported {
@@ -74,8 +76,8 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
                     
                     // Update the rightHandIntermediate position to the last received right hand anchor update
                     rightHandIntermediate.transform = Transform(matrix: anchor.originFromAnchorTransform)
-                    
-                    // Apply a custom offset to the syringe so its held in hand
+                    leftHandEntity.scale = .init(repeating: 1)
+                    // Apply a custom offset to the entity so its held in hand
                     configureSyringeEntityHandOffset()
                     
                     // Check for custom gestures
