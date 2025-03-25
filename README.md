@@ -11,7 +11,9 @@ This sample repository contains a working example of using hand tracking to pare
 This sample repository contains a working example of loading an operating room 3d model and placing it in the environment.  Along with multiple grabbale medical/surgical devices, with physics and collision support.
 - *Helps with:* Grabable objects, Loading a virtual scene, CollisionComponent & PhysicsBodyComponent
 
-
+### [RealityViewAttachmentSample](https://github.com/hunterh37/MedVR-VisionPro-Sprint-2025/tree/fc59f3cf994674ef9195b2c8a15bebd206296924/2025/RealityViewAttachmentSample/RealityViewAttachmentSample)
+This sample repository contains a working example of using RealityView Attachments to display SwiftUI 2d view content in your immersive scene.
+- *Helps with:* Display text, buttons, or other SwiftUI views in 3d space
 
 
 ------- 
