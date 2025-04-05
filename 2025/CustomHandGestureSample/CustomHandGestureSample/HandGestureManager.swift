@@ -42,6 +42,11 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
             // Add rightHandEntity as a child to rightHandEntity
             rightHandIntermediate.addChild(rightHandEntity)
             
+            // Configure collision on the Syringe entity
+            rightHandEntity.name = "triggerEntity"
+            rightHandEntity.components.set(CollisionComponent(shapes: [.generateBox(width: 0.1, height: 0.1, depth: 0.1)]))
+            rightHandEntity.components.set(PhysicsBodyComponent(shapes: [.generateBox(size: .init(x: 0.1, y: 0.1, z: 0.1))], mass: 10))
+            
             // Add the rightHandIntermediate to the scene
             rootEntity.addChild(rightHandIntermediate)
             
