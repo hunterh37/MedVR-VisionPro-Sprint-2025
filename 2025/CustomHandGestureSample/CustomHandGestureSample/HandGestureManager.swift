@@ -43,7 +43,7 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
             rightHandIntermediate.addChild(rightHandEntity)
             
             // Configure collision on the Syringe entity
-            rightHandEntity.name = "triggerEntity"
+            rightHandEntity.name = triggerEntityName
             rightHandEntity.components.set(CollisionComponent(shapes: [.generateBox(width: 0.1, height: 0.1, depth: 0.1)]))
             rightHandEntity.components.set(PhysicsBodyComponent(shapes: [.generateBox(size: .init(x: 0.1, y: 0.1, z: 0.1))], mass: 10))
             

@@ -35,7 +35,7 @@ struct ImmersiveView: View {
             // Configure collision entity
             collisionEntity = ModelEntity(mesh: .generateSphere(radius: 0.3), materials: [UnlitMaterial(color: .yellow)], collisionShape: .generateSphere(radius: 0.3), mass: 100)
             collisionEntity.generateCollisionShapes(recursive: true)
-            collisionEntity.name = "collisionEntity"
+            collisionEntity.name = collisionEntityName
             rootEntity.addChild(collisionEntity)
             
             subscribeToCollisionEvents(content: content)
