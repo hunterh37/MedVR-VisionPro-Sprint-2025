@@ -5,7 +5,7 @@ This repository contains multiple sample projects to help you get started in the
 
 ### [CustomHandGestureSample](https://github.com/hunterh37/MedVR-VisionPro-Sprint-2025/tree/ba0400c1c96ba546dc23d9096c1346daa10de3e5/2025/CustomHandGestureSample/CustomHandGestureSample)
 This sample repository contains a working example of using hand tracking to parent a syringe 3d model to the users right hand.
-- *Helps with:* Hand Tracking, Showing a virtual object on the hand
+- *Helps with:* Hand Tracking, Showing a virtual object on the hand, Logic for collisions between 2 objects
 <img width="600" alt="Screenshot 2025-03-25 at 4 04 59 PM" src="https://github.com/user-attachments/assets/c61e4cbf-b05d-4954-b54d-39296812edf2" />
 
 
